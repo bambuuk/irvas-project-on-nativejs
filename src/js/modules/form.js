@@ -1,15 +1,12 @@
-const forms = () => {
-    const form = document.querySelectorAll('form'),
-          inputs = document.querySelectorAll('input'),
-          phoneInputs = document.querySelectorAll('input[name="user_phone"]');
+import checkNumInputs from "./checkNumInputs";
 
-    /** Здесь мы проверям в инпутах с именем user_phone входящие значения,
-     * если это не числа, то эти символы убираем*/      
-    phoneInputs.forEach(item => {
-        item.addEventListener('input', () => {
-            item.value = item.value.replace(/\D/, '');
-        });
-    });
+const forms = (state) => {
+    const form = document.querySelectorAll('form'),
+          inputs = document.querySelectorAll('input');
+
+
+ /** Вызываем функцию, которая все символы в инпутах, кроме цифр */
+    checkNumInputs('input[name="user_phone"]');
 
     const message = {
         loading: 'Загрузка....',
@@ -46,6 +43,15 @@ const forms = () => {
             const formData = new FormData(item); /** этот объект находит 
             все инпуты, собирает данные в специальную структуру и 
             передаёт в переменную */
+
+            /** Здесь добавляем в formdata информацию из формы калькулятора,
+             * если юзер отправил именно её
+             */
+            if (item.getAttribute('data-calc') == 'end') {
+                for (let key in state) {
+                    formData.append(key, state[key]);
+                }
+            }
 
             /** отправляем запрос на сервер */
             postData('assets/server.php', formData)

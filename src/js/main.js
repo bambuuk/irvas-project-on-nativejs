@@ -3,10 +3,14 @@ import modals from './modules/modals';
 import tabs from './modules/tabs';
 import forms from './modules/form';
 import changeModalState from './modules/changeModalState';
+import timer from './modules/timer';
 
 window.addEventListener('DOMContentLoaded', () => {
 
     let modalState = {};
+    let ded = new Date();
+    ded.setDate(ded.getDate() + 2); // здесь создал переменную с ткущей датой +1 день
+    let deadline = ded;
 
     changeModalState(modalState);
     modals();
@@ -14,6 +18,7 @@ window.addEventListener('DOMContentLoaded', () => {
     tabs('.decoration_slider', '.no_click', '.decoration_content > div > div', 'after_click');
     tabs('.balcon_icons', '.balcon_icons_img', '.big_img > img', 'do_image_more', 'inline-block');
     forms(modalState);
+    timer('.container1', deadline);
 
 
 });
